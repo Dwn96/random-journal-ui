@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const theme = createTheme({
   palette: {
@@ -30,7 +29,6 @@ function Journal(props) {
     setInputText(event.target.value);
   };
 
-  const navigate = useNavigate()
 
   const handleSubmit = async () => {
     if (
@@ -45,14 +43,13 @@ function Journal(props) {
     const baseURL = import.meta.env.VITE_BASE_URL;
     const config = {
       headers: {
-        Authorization: `Bearer ${props.token}`,
+        Authorization: `Bearer ${props.authUser.token}`,
       },
     };
     try {
       const url = `${baseURL}/journal`;
       const payload = {
         content: inputText,
-        created_by: 1
       }
       await axios.post(url, payload, config);
       

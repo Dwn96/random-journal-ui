@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 function App() {
 
-  const [token, setToken] = useState('');
+  const [authUser, setAuthUser] = useState<{token:string, userId?: number}>({token: '', userId: undefined})
   const navigate = useNavigate()
   useEffect(() => {
     // Function to get the token from the cookie
@@ -26,7 +26,10 @@ function App() {
 
     const storedToken = getTokenFromCookie();
     if (storedToken) {
-      setToken(storedToken);
+      setAuthUser({
+        token: storedToken,
+      })
+      
     } else {
       navigate("/");   
     }
@@ -38,7 +41,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<Registration />} />
-        <Route path="/journal" element={<Journal token={token} />} />
+        <Route path="/journal" element={<Journal authUser={authUser} />} />
       </Routes>
     </div>
   )
