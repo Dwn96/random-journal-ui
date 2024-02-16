@@ -9,11 +9,10 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
-import AdbIcon from '@material-ui/icons';
 import { MenuItem } from '@mui/material';
 
 
-const pages = ['Products', 'Pricing', 'Blog'];
+const pages = [];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 
