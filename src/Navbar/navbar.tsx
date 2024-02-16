@@ -10,16 +10,18 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import { MenuItem } from '@mui/material';
+import { useNavigate } from "react-router-dom";
 
 
 const pages = [];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Logout'];
 
 
 
 export default function NavBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const navigate = useNavigate()
   
     const handleOpenNavMenu = (event) => {
       setAnchorElNav(event.currentTarget);
@@ -34,6 +36,8 @@ export default function NavBar() {
   
     const handleCloseUserMenu = () => {
       setAnchorElUser(null);
+      document.cookie = `token=; expires=; path=/`;
+      navigate("/register");
     };
   
   return (
