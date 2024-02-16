@@ -41,7 +41,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<Registration />} />
-        <Route path="/journal" element={<Journal authUser={authUser} />} />
+        <Route path="/journal" element={<Journal authUser={authUser} setAuthUser={setAuthUser} />} />
       </Routes>
     </div>
   )

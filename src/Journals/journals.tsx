@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme({
   palette: {
@@ -21,6 +22,31 @@ const theme = createTheme({
 });
 
 function Journal(props) {
+  const navigate = useNavigate()
+  useEffect(() => {
+    // Function to get the token from the cookie
+    const getTokenFromCookie = () => {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith('token=')) {
+          return cookie.substring(6); // Extract token value
+        }
+      }
+      return '';
+    };
+
+    const storedToken = getTokenFromCookie();
+    if (storedToken) {
+      props.setAuthUser({
+        token: storedToken,
+      })
+      
+    } else {
+      navigate("/");   
+    }
+
+  }, []);
   const [inputText, setInputText] = useState("");
   const [cards, setCards] = useState<{ content: string, created_at: Date }[]>([]);
   const [message, setMessage] = useState({});
@@ -66,20 +92,23 @@ function Journal(props) {
       }
       await axios.post(url, payload, config);
 
+      if (inputText.trim() !== "") {
+        setCards([...cards, { content: inputText.trim(), created_at: new Date() }]);
+        setInputText("");
+      }
+
       setMessage({
         severity: "success",
         text: `Success`,
       });
+
     } catch (e) {
       setMessage({
         severity: "error",
         text: "Error creating journal",
       });
     }
-    if (inputText.trim() !== "") {
-      setCards([...cards, { content: inputText.trim(), created_at: new Date() }]);
-      setInputText("");
-    }
+
   };
 
   return (
