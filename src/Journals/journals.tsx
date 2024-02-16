@@ -9,6 +9,9 @@ import {
   createTheme,
   Typography,
 } from "@mui/material";
+import Alert from "@mui/material/Alert";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme({
   palette: {
@@ -18,15 +21,51 @@ const theme = createTheme({
   },
 });
 
-function Journal() {
+function Journal(props) {
   const [inputText, setInputText] = React.useState("");
   const [cards, setCards] = React.useState<{content:string, createdOn: Date}[]>([]);
+  const [message, setMessage] = React.useState({});
 
   const handleInputChange = (event) => {
     setInputText(event.target.value);
   };
 
-  const handleSubmit = () => {
+  const navigate = useNavigate()
+
+  const handleSubmit = async () => {
+    if (
+      !inputText
+    ) {
+      setMessage({
+        severity: "error",
+        text: "Cannot submit empty journal",
+      });
+      return;
+    }
+    const baseURL = import.meta.env.VITE_BASE_URL;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${props.token}`,
+      },
+    };
+    try {
+      const url = `${baseURL}/journal`;
+      const payload = {
+        content: inputText,
+        created_by: 1
+      }
+      await axios.post(url, payload, config);
+      
+      setMessage({
+        severity: "success",
+        text: `Success`,
+      });
+    } catch (e) {
+      setMessage({
+        severity: "error",
+        text: "Error creating journal",
+      });
+    }
     if (inputText.trim() !== "") {
       setCards([...cards, { content: inputText.trim(), createdOn: new Date() }]);
       setInputText("");
@@ -65,6 +104,11 @@ function Journal() {
             </Card>
           ))}
         </div>
+        {message.text && (
+            <Alert style={{ marginTop: "12px" }} severity={message.severity}>
+              {message.text}
+            </Alert>
+          )}
       </Container>
     </ThemeProvider>
   );
