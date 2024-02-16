@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./LandingPage.css"; // Import the CSS file
 import { Link } from "react-router-dom";
 const LandingPage = () => {
+  useEffect(() => {
+    console.log('psdx', document.cookie)
+  },[])
   return (
     <div className="landing-page">
       <div className="content">
@@ -14,7 +17,7 @@ const LandingPage = () => {
               a new story, waiting to be explored and shared.
             </p>
             <Link to="/register">
-              <button>Start journey</button>
+              <button>GO</button>
             </Link>
           </div>
           <div className="image">
